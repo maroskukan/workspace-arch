@@ -2,7 +2,7 @@
 
 This repository contains notes for a fresh Arch Linux installation.
 
-## Installation
+## Host Hypervisor settings
 
 Download the latest ISO from [Arch website](https://archlinux.org/download/).
 
@@ -45,24 +45,39 @@ Set-VMFirmware -VMName $VMName -FirstBootDevice $DVDDrive
 Start-VM -Name $VMName
 ```
 
-
-Once you are dropped in the live CD shell, retrieve the IP address with `ip add show` and set installator `root` password with `passwd` so you can access the installation remotely via SSH.
-
-Retrieve the current IP address from host using powershell:
+Once the VM boots into installation environment retrieve the current IP address from host using powershell:
 
 ```powershell
 # Retrieve the Guest IP Address
 $GuestIP = (Get-VM -VMName $VMName | Get-VMNetworkAdapter).IpAddresses[0]
 ```
 
-Retrieve the current IP address from guest using bash:
+
+## Installation
+
+Once you are dropped in the live CD shell, set installator `root` password with `passwd` this gives you remote access the installation via SSH as oppose to using Virtual Console.
+
+
+### Basic settings
+
+Ensure that time and package DBs are synchronized:
 
 ```bash
-ip a s eth0 | egrep -o 'inet [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d' ' -f2
+# Enable NTP
+timedatectl set-ntp true
+
+# Synchronize package databases
+pacman -Sy
 ```
 
-List exising disks:
+### Disk settings
+
+List existing disks:
 
 ```bash
+# Using lsblk filter by type
+lsblk -I 8 -d
+
+# Using fdisk
 fdisk -l
 ```
