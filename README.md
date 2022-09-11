@@ -53,9 +53,37 @@ $GuestIP = (Get-VM -VMName $VMName | Get-VMNetworkAdapter).IpAddresses[0]
 ```
 
 
+
+## Bootable USB 
+
+```bash
+# Create new bootable USB stick
+sudo dd bs=4M if=Downloads/arch/archlinux-2022.09.03-x86_64.iso of=/dev/sda
+```
+
+> **Warning**: Make sure the device name is correct, you can inspect this by using lsblk.
+
+
+
 ## Installation
 
 Once you are dropped in the live CD shell, set installator `root` password with `passwd` this gives you remote access the installation via SSH as oppose to using Virtual Console.
+
+
+### Network settings
+
+#### Wireless
+
+```bash
+# Retrieve the adapter name
+ip a show
+
+# Connect to wireless network
+iwctl --passphrase=<YOUR_PSK> station wlan0 connect <YOUR_SSID>
+
+# Verify
+ping -c 3 1.1.1.1
+```
 
 
 ### Basic settings
