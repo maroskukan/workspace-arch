@@ -109,3 +109,43 @@ lsblk -I 8 -d
 # Using fdisk
 fdisk -l
 ```
+
+
+## Tips
+
+### Arch User Repositories
+
+In order to install packages located in Arch User Repositories (AUR) you need to make sure you have `git` and `base-devel` installed first. Then clone the desired repository, build and install the application.
+
+```bash
+git clone https://aur.archlinux.org/brave-bin.git && cd brave-bin
+makepkg -si
+```
+
+The `yay` helper can be used to simplify installation of these packages.
+
+```bash
+# Clone the repository
+git clone https://aur.archlinux.org/yay.git && cd yay
+
+# Build and Install the package
+makepkg -si
+```
+
+Afterwards, use `yay` to install packages.
+
+```bash
+# Search for a package
+yay -Ss brave-bin
+aur/brave-bin 1:1.43.89-1 (+628 16.98) (Installed)
+    Web browser that blocks ads and trackers by default (binary release)
+
+# Display information about a package
+yay -Si brave-bin
+
+# Install a package
+yay -S brave-bin
+
+# Update packages (pacman & aur)
+yay -Syu
+```
