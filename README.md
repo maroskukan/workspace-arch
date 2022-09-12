@@ -27,6 +27,11 @@
   - [Graphical User Interface](#graphical-user-interface)
     - [XORG](#xorg)
     - [GPU Driver](#gpu-driver)
+  - [Desktop Environment](#desktop-environment)
+    - [Gnome](#gnome)
+    - [Plasma](#plasma)
+    - [Xfce](#xfce)
+    - [Mate](#mate)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
 
@@ -571,6 +576,93 @@ VirtualBox:
 
 ```bash
 pacman -S --noconfirm xf86-video-vmware
+sustemctl enable vboxservice
+```
+
+
+## Desktop Environment
+
+### Gnome
+
+Recommended packages (~460 MiB ~546 Packages) for Gnome include:
+
+```bash
+pacman -S --noconfirm gnome gnome-tweaks
+```
+
+Enable default login manager:
+
+```bash
+systemctl enable gdm
+```
+
+Reboot to take effect:
+
+```bash
+reboot
+```
+
+
+### Plasma
+
+Recommended packages (~1380 MiB ~815 Packages) for Plasma include:
+
+```bash
+pacman -S --noconfirm plasma-meta kde-applications
+```
+
+Enable default login manager:
+
+```bash
+systemctl enable sddm
+```
+
+Reboot to take effect:
+
+```bash
+reboot
+```
+
+
+### Xfce
+
+Recommended packages for Xfce include:
+
+```bash
+pacman -S --noconfirm xfce4 xfce-goodies lightdm lightdm-gtk-greeter
+```
+
+Enable default login manager:
+
+```bash
+systemctl enable lightdm
+```
+
+Reboot to take effect:
+
+```bash
+reboot
+```
+
+
+### Mate
+
+Recommended packages for Mate include:
+
+```bash
+pacman -S --noconfirm mate mate-extra lightdm lightdm-gtk-greeter
+```
+
+Enable default login manager:
+
+```bash
+systemctl enable lightdm
+```
+
+Reboot to take effect:
+
+```bash
+reboot
 ```
 
 
