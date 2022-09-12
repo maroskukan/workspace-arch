@@ -24,6 +24,9 @@
     - [SWAP](#swap)
     - [Localization](#localization-1)
     - [Microcode](#microcode)
+  - [Graphical User Interface](#graphical-user-interface)
+    - [XORG](#xorg)
+    - [GPU Driver](#gpu-driver)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
 
@@ -331,6 +334,12 @@ pacman -S --noconfirm hyperv
 systemctl enable {hv_fcopy_daemon,hv_kvp_daemon,hv_vss_daemon}
 ```
 
+Recommended packages for guest VM in VirtualBox:
+
+```bash
+pacman -S --noconfirm virtualbox-guest-utils
+```
+
 Recommended utilities:
 
 ```bash
@@ -525,6 +534,45 @@ AMD CPU:
 ```bash
 pacman -S amd-ucode
 ```
+
+
+## Graphical User Interface
+
+### XORG
+
+X-org is required in case you want to run a full desktop environment (Gnome, KDE Plasma, XFCE, Cinnamon, Mate, COSMIC) or just window manager (Awesome WM, DWM, i3, Xmonad, Fluxbox)
+
+```bash
+pacman -S --noconfirm xorg-server
+```
+
+
+### GPU Driver
+
+Intel or AMD:
+
+```bash
+pacman -S --noconfirm mesa
+```
+
+Nvidia:
+
+```bash
+pacman -S --noconfirm nvidia
+```
+
+HyperV:
+
+```bash
+pacman -S --noconfirm xf86-video-fbdev
+```
+
+VirtualBox:
+
+```bash
+pacman -S --noconfirm xf86-video-vmware
+```
+
 
 ## Tips
 
