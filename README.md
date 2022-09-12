@@ -323,24 +323,23 @@ export PS1="(chroot) $PS1"
 Recommended packages for guest VM in Hyper-V:
 
 ```bash
-pacman -S hyperv
-systemctl enable hv_fcopy_daemon.service
-systemctl enable hv_kvp_daemon.service
-systemctl enable hv_vss_daemon.service
+pacman -S --noconfirm hyperv
+systemctl enable {hv_fcopy_daemon,hv_kvp_daemon,hv_vss_daemon}
 ```
 
 Recommended utilities:
 
 ```bash
-pacman -S vi git base-devel openssh networkmanager dialog lvm2
-systemctl enable sshd
-systemctl enable NetworkManager
+pacman -S --noconfirm vi git base-devel openssh networkmanager dialog lvm2
+systemctl enable {sshd,NetworkManager}
 ```
+
+> **Warning**: In some weird situations the initramfs rebuilding fails after installing lvm2 package. If using `--noconfirm` the process get killed but pacman locks the database. You can unlock it with `rm -rf /var/lib/pacman/db.lck` and then reinstalling the `lvm2` package.
 
 Recommended packags for wireless networking:
 
 ```bash
-pacman -S wpa_supplicant wireless_tools netctl
+pacman -S --noconfirm wpa_supplicant wireless_tools netctl
 ```
 
 
@@ -409,7 +408,7 @@ echo "maros ALL=(ALL) ALL" | sudo tee /etc/sudoers.d/maros
 Install packages:
 
 ```bash
-pacman -S grub efibootmgr dosfstools os-prober mtools
+pacman -S --noconfirm grub efibootmgr dosfstools os-prober mtools
 ```
 
 Install grub MBR:
@@ -426,8 +425,10 @@ Verify if `locale` folder exists in `/boot/grub`:
 ```bash
 ls /boot/grub/locale
 ```
+If not create the directory and generate locale:
 
 ```bash
+mkdir /boot/grub/locale
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 ```
 
@@ -440,9 +441,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 Exit chroot, unmount and reboot, you will continue in target environment:
 
-```
+```bash
+# Expire root password
+chage -d 0 root
+
+# Exit chroot
 exit
-umount -a
+
+# Umount /mnt
+umount /mnt
+
+# Reboot
 reboot
 ```
 
