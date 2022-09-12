@@ -20,6 +20,10 @@
     - [User Accounts](#user-accounts)
     - [Sudo](#sudo)
     - [Bootloader](#bootloader)
+  - [Customization](#customization)
+    - [SWAP](#swap)
+    - [Localization](#localization-1)
+    - [Microcode](#microcode)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
 
@@ -455,6 +459,72 @@ umount /mnt
 reboot
 ```
 
+
+## Customization
+
+These steps are performed from within the target environment as `root` user.
+
+### SWAP
+
+Create a SWAP file:
+
+```bash
+dd if=/dev/zero of=/swapfile bs=1M count=2048
+```
+
+Change permissions and format the file:
+
+```bash
+chmod 600 /swapfile
+mkswap /swapfile
+```
+
+Update `fstab` and activate swap:
+
+```bash
+cp /etc/fstab /etc/fstab.bak
+echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+
+mount -a
+swapon -a
+
+# Verify
+cat /proc/meminfo | grep Swap
+```
+
+
+### Localization
+
+Time zone and synchronization:
+
+```bash
+timedatectl set-timezone Europe/Bratislava
+timedatectl set-ntp true
+systemctl enable systemd-timesyncd
+```
+
+Hostname and hosts file"
+
+```bash
+hostnamectl set-hostname dojo.localdomain
+echo "127.0.0.1 localhost" >> /etc/hosts
+echo "127.0.1.1 dojo dojo.localdomain" >> /etc/hosts
+```
+
+
+### Microcode
+
+Intel CPU:
+
+```bash
+pacman -S intel-ucode 
+```
+
+AMD CPU:
+
+```bash
+pacman -S amd-ucode
+```
 
 ## Tips
 
