@@ -310,10 +310,11 @@ reflector > /etc/pacman.d/mirrorlist
 pacstrap -i /mnt base linux linux-headers linux-firmware
 ```
 
-Enter the target environment:
+Enter the target environment and update prompt for cosmetics:
 
 ```bash
 arch-chroot /mnt
+export PS1="(chroot) $PS1"
 ```
 
 
