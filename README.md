@@ -32,6 +32,9 @@
     - [Plasma](#plasma)
     - [Xfce](#xfce)
     - [Mate](#mate)
+  - [Window Manager](#window-manager)
+    - [Awesome WM](#awesome-wm)
+      - [Configuration](#configuration)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
 
@@ -348,7 +351,7 @@ pacman -S --noconfirm virtualbox-guest-utils
 Recommended utilities:
 
 ```bash
-pacman -S --noconfirm vi git base-devel openssh networkmanager dialog lvm2
+pacman -S --noconfirm vim git base-devel openssh networkmanager dialog lvm2
 systemctl enable {sshd,NetworkManager}
 ```
 
@@ -522,6 +525,7 @@ Hostname and hosts file"
 ```bash
 hostnamectl set-hostname dojo.localdomain
 echo "127.0.0.1 localhost" >> /etc/hosts
+echo "::1       localhost" >> /etc/hosts
 echo "127.0.1.1 dojo dojo.localdomain" >> /etc/hosts
 ```
 
@@ -584,7 +588,11 @@ sustemctl enable vboxservice
 
 ### Gnome
 
-Recommended packages (~460 MiB ~546 Packages) for Gnome include:
+| Package Count | Packages Size | Memory Footprint (All) |
+| ------------- | ------------- | ---------------------- |
+| 546           | 457 Mib       | 880 MB                 |
+
+Recommended packages for Gnome include:
 
 ```bash
 pacman -S --noconfirm gnome gnome-tweaks
@@ -605,7 +613,11 @@ reboot
 
 ### Plasma
 
-Recommended packages (~1380 MiB ~815 Packages) for Plasma include:
+| Package Count | Packages Size | Memory Footprint (All) |
+| ------------- | ------------- | ---------------------- |
+| 815           | 1380 Mib      | 1005 MB                |
+
+Recommended packages for Plasma include:
 
 ```bash
 pacman -S --noconfirm plasma-meta kde-applications
@@ -626,10 +638,14 @@ reboot
 
 ### Xfce
 
+| Package Count | Packages Size | Memory Footprint (All) |
+| ------------- | ------------- | ---------------------- |
+| 189           | 83 Mib        | 333 MB                 |
+
 Recommended packages for Xfce include:
 
 ```bash
-pacman -S --noconfirm xfce4 xfce-goodies lightdm lightdm-gtk-greeter
+pacman -S --noconfirm xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
 ```
 
 Enable default login manager:
@@ -647,6 +663,10 @@ reboot
 
 ### Mate
 
+| Package Count | Packages Size | Memory Footprint (All) |
+| ------------- | ------------- | ---------------------- |
+| 230           | 307 Mib       | 435 MB                 |
+
 Recommended packages for Mate include:
 
 ```bash
@@ -663,6 +683,74 @@ Reboot to take effect:
 
 ```bash
 reboot
+```
+
+
+## Window Manager
+
+Window Manager offers low footprint environment with high level of customizaion.
+
+### Awesome WM
+
+| Package Count | Packages Size | Memory Footprint (All) |
+| ------------- | ------------- | ---------------------- |
+| 76            | 35 Mib        | 142 MB                 |
+
+```bash
+# Install base packages including default terminal emulator and Login manager
+pacman -S --noconfirm awesome xterm lightdm lightdm-gtk-greeter
+
+# Optionally install file manager and alternative terminal
+pacman -S --noconfirm pcmanfm alacritty compton nitrogen archlinux-wallpaper dmenu
+```
+
+```bash
+systemctl enable lightdm
+```
+
+Reboot to take effect:
+
+```bash
+reboot
+```
+
+Here are some shortcuts:
+
+| Shortcut              | Description      |
+| --------------------- | ---------------- |
+| `Opt` + `Enter`       | Start terminal   |
+| `Opt` + `Shift` + `c` | Close window     |
+| `Opt` + `r`           | Run prompt       |
+| `Opt` + `s`           | Show keybindings |
+| `Ctrl` + `Opt` + `r`  | Reload awesome   |
+
+
+> **Info**: It is also possible to run Window Manager directly, without the use of login manager. `Opt` is also referred to as `Super` key.
+
+
+#### Configuration
+
+```bash
+mkdir -p ~/.config/awesome
+sudo find / -name rc.lua
+cp /etc/xdg/awesome/rc.lua ~/.config/awesome/rc.lua
+```
+
+Change default terminal:
+
+```bash
+cp ~/.config/awesome/rc.lua
+
+# Update configuration
+sed -i 's/^terminal =.*/terminal = "alacritty"/' ~/.config/awesome/rc.lua
+
+echo -e '\n\n-- Autostart Applications' >> ~/.config/awesome/rc.lua
+echo -e 'awful.spawn.with_shell("compton")' >> ~/.config/awesome/rc.lua
+echo -e 'awful.spawn.with_shell("nitrogen --restore")' >> ~/.config/awesome/rc.lua
+
+
+# Validate configuration
+awesome -k
 ```
 
 
