@@ -37,6 +37,7 @@
       - [Configuration](#configuration)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
+    - [Applications to consider](#applications-to-consider)
 
 
 
@@ -561,16 +562,16 @@ pacman -S --noconfirm xorg-server
 
 ### GPU Driver
 
-Intel or AMD:
+Intel:
 
 ```bash
-pacman -S --noconfirm mesa
+pacman -S --noconfirm mesa vulkan-intel intel-media-driver
 ```
 
 Nvidia:
 
 ```bash
-pacman -S --noconfirm nvidia
+pacman -S --noconfirm nvidia nvidia-utils
 ```
 
 HyperV:
@@ -797,4 +798,10 @@ paru -Sua
 
 # Check for updates (aur)
 paru -Qua
+```
+
+### Applications to consider
+
+```bash
+pacman -S bat
 ```
