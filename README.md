@@ -668,6 +668,9 @@ Recommended packages for Xfce include:
 pacman -S --noconfirm xfce4 xfce4-goodies lightdm lightdm-gtk-greeter
 ```
 
+> **Note**: Instead of default `lightdm-gtk-greeter` you can also use the `lightdm-webkit2-greeter` which supports large number of customized themes. Or you can go as minimal as `lightdm-mini-greeter`.
+
+
 Enable default login manager:
 
 ```bash
