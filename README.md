@@ -324,6 +324,11 @@ reflector > /etc/pacman.d/mirrorlist
 pacstrap -i /mnt base linux linux-headers linux-firmware
 ```
 
+> **Note**: You have number of choices available when it comes to kernels, you can install latest as show above or the lts version `linux-lts`, `linux-lts-headers` or both.
+
+> **Note**: When installing in guest virtual machine, you don't need to include `linux-firmware`
+
+
 Enter the target environment and update prompt for cosmetics:
 
 ```bash
@@ -786,4 +791,10 @@ paru -S brave-bin
 
 # Update packages (pacman & aur)
 paru -Syu
+
+# Update packages (aur)
+paru -Sua
+
+# Check for updates (aur)
+paru -Qua
 ```
