@@ -146,6 +146,9 @@ Ensure that time and package DBs are synchronized:
 # Enable NTP
 timedatectl set-ntp true
 
+# Enable parallel downloads
+sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf
+
 # Synchronize package databases
 pacman -Sy
 ```
@@ -322,7 +325,7 @@ reflector > /etc/pacman.d/mirrorlist
 ```
 
 ```bash
-pacstrap -i /mnt base linux linux-headers linux-firmware
+pacstrap /mnt base linux linux-headers linux-firmware
 ```
 
 > **Note**: You have number of choices available when it comes to kernels, you can install latest as show above or the lts version `linux-lts`, `linux-lts-headers` or both.
