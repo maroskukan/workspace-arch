@@ -763,30 +763,27 @@ git clone https://aur.archlinux.org/brave-bin.git && cd brave-bin
 makepkg -si
 ```
 
-The `yay` helper can be used to simplify installation of these packages.
+The `paru` helper can be used to simplify installation of these packages.
 
 ```bash
-# Clone the repository
-git clone https://aur.archlinux.org/yay.git && cd yay
-
-# Build and Install the package
-makepkg -si
+# Clone the repository and build and install the package
+git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si
 ```
 
-Afterwards, use `yay` to install packages.
+Afterwards, use `paru` to install packages.
 
 ```bash
 # Search for a package
-yay -Ss brave-bin
+paru -Ss brave-bin
 aur/brave-bin 1:1.43.89-1 (+628 16.98) (Installed)
     Web browser that blocks ads and trackers by default (binary release)
 
 # Display information about a package
-yay -Si brave-bin
+paru -Si brave-bin
 
 # Install a package
-yay -S brave-bin
+paru -S brave-bin
 
 # Update packages (pacman & aur)
-yay -Syu
+paru -Syu
 ```
