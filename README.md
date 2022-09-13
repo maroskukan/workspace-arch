@@ -290,9 +290,8 @@ Mount the filesystems:
 # Mount root fs
 mount /dev/volgroup0/lv_root /mnt
 
-# Mount /boot and /home /boot
-mkdir /mnt/home
-mount /dev/volgroup0/lv_home /mnt/home
+# Mount /home 
+mount --mkdir /dev/volgroup0/lv_home /mnt/home
 ```
 
 Next, create partition table:
@@ -435,8 +434,7 @@ pacman -S --noconfirm grub efibootmgr dosfstools os-prober mtools
 Install grub MBR:
 
 ```bash
-mkdir /boot/EFI
-mount /dev/sda1 /boot/EFI
+mount --mkdir /dev/sda1 /boot/EFI
 
 grub-install --target=x86_64-efi --bootloader-id=grub_eufi --recheck
 ```
