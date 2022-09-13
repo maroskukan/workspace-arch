@@ -333,34 +333,28 @@ pacstrap /mnt base linux linux-headers linux-firmware
 > **Note**: When installing in guest virtual machine, you don't need to include `linux-firmware`
 
 
-Enter the target environment and update prompt for cosmetics:
-
-```bash
-arch-chroot /mnt
-export PS1="(chroot) $PS1"
-```
-
 
 ### Installing Packages
 
 Recommended packages for guest VM in Hyper-V:
 
 ```bash
-pacman -S --noconfirm hyperv
-systemctl enable {hv_fcopy_daemon,hv_kvp_daemon,hv_vss_daemon}
+arch-chroot /mnt sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf
+arch-chroot /mnt pacman -S --noconfirm hyperv
+arch-chroot /mnt systemctl enable {hv_fcopy_daemon,hv_kvp_daemon,hv_vss_daemon}
 ```
 
 Recommended packages for guest VM in VirtualBox:
 
 ```bash
-pacman -S --noconfirm virtualbox-guest-utils
+arch-chroot /mnt pacman -S --noconfirm virtualbox-guest-utils
 ```
 
 Recommended utilities:
 
 ```bash
-pacman -S --noconfirm vim git base-devel openssh networkmanager dialog lvm2
-systemctl enable {sshd,NetworkManager}
+arch-chroot /mnt pacman -S --noconfirm vim git base-devel openssh networkmanager dialog lvm2
+arch-chroot /mnt systemctl enable {sshd,NetworkManager}
 ```
 
 > **Warning**: In some weird situations the initramfs rebuilding fails after installing lvm2 package. If using `--noconfirm` the process get killed but pacman locks the database. You can unlock it with `rm -rf /var/lib/pacman/db.lck` and then reinstalling the `lvm2` package.
@@ -368,7 +362,7 @@ systemctl enable {sshd,NetworkManager}
 Recommended packags for wireless networking:
 
 ```bash
-pacman -S --noconfirm wpa_supplicant wireless_tools netctl
+arch-chroot /mnt pacman -S --noconfirm wpa_supplicant wireless_tools netctl
 ```
 
 
@@ -377,34 +371,34 @@ pacman -S --noconfirm wpa_supplicant wireless_tools netctl
 Add LVM support to HOOKS:
 
 ```bash
-cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak
-sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)/' /etc/mkinitcpio.conf
+arch-chroot /mnt cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak
+arch-chroot /mnt sed -i 's/^HOOKS=.*/HOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)/' /etc/mkinitcpio.conf
 ```
 
 Apply the changes:
 
 ```bash
-mkinitcpio -p linux
+arch-chroot /mnt mkinitcpio -p linux
 ```
 
 
 ### Localization
 
 ```bash
-cp /etc/locale.gen /etc/locale.gen.bak
-sed -i 's/^#en_US.UTF-8.*/en_US.UTF-8 UTF-8/' /etc/locale.gen
+arch-chroot /mnt cp /etc/locale.gen /etc/locale.gen.bak
+arch-chroot /mnt  sed -i 's/^#en_US.UTF-8.*/en_US.UTF-8 UTF-8/' /etc/locale.gen
 ```
 
-Apply the chages:
+Apply the changes:
 
 ```bash
-locale-gen
+arch-chroot /mnt locale-gen
 ```
 
 Create `locale.conf` and set `LANG` variable:
 
 ```bash
-echo "LANG=en_US.URF-8" > /etc/locale.conf
+arch-chroot /mnt echo "LANG=en_US.URF-8" > /etc/locale.conf
 ```
 
 
@@ -413,21 +407,21 @@ echo "LANG=en_US.URF-8" > /etc/locale.conf
 Set password for root user:
 
 ```bash
-# Set root password
-echo "root:changeme"|chpasswd
+# Set root password - this does not work
+arch-chroot /mnt echo "root:changeme"|arch-chroot /mnt chpasswd
 ```
 
 
 Create normal user:
 
 ```bash
-useradd -m -g users maros
+arch-chroot /mnt useradd -m -g users maros
 
-# Set Initial password
-echo "maros:changeme"|chpasswd
+# Set Initial password - this does not work
+arch-chroot /mnt echo "maros:changeme"|arch-chroot /mnt chpasswd
 
 # Force user to change after initial login
-chage -d 0 maros
+arch-chroot /mnt chage -d 0 maros
 ```
 
 ### Sudo
@@ -435,7 +429,7 @@ chage -d 0 maros
 Allow user to use sudo with password:
 
 ```bash
-echo "maros ALL=(ALL) ALL" | sudo tee /etc/sudoers.d/maros
+arch-chroot /mnt echo "maros ALL=(ALL) ALL" > arch-chroot /mnt tee /etc/sudoers.d/maros
 ```
 
 
@@ -444,44 +438,41 @@ echo "maros ALL=(ALL) ALL" | sudo tee /etc/sudoers.d/maros
 Install packages:
 
 ```bash
-pacman -S --noconfirm grub efibootmgr dosfstools os-prober mtools
+arch-chroot /mnt pacman -S --noconfirm grub efibootmgr dosfstools os-prober mtools
 ```
 
 Install grub MBR:
 
 ```bash
-mount --mkdir /dev/sda1 /boot/EFI
+arch-chroot /mnt mount --mkdir /dev/sda1 /boot/EFI
 
-grub-install --target=x86_64-efi --bootloader-id=grub_eufi --recheck
+arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=grub_eufi --recheck
 ```
 
 Verify if `locale` folder exists in `/boot/grub`:
 
 ```bash
-ls /boot/grub/locale
+arch-chroot /mnt ls /boot/grub/locale
 ```
 If not create the directory and generate locale:
 
 ```bash
-mkdir /boot/grub/locale
-cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
+arch-chroot /mnt mkdir /boot/grub/locale
+arch-chroot /mnt cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 ```
 
 Generate grub configuration file:
 
 ```bash
-grub-mkconfig -o /boot/grub/grub.cfg
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 
-Exit chroot, unmount and reboot, you will continue in target environment:
+Expire target `root` password, unmount and reboot, you will continue in target environment:
 
 ```bash
 # Expire root password
-chage -d 0 root
-
-# Exit chroot
-exit
+arch-chroot /mnt chage -d 0 root
 
 # Umount /mnt
 umount -R /mnt
