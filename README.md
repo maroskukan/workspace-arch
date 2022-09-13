@@ -398,6 +398,13 @@ Apply the chages:
 locale-gen
 ```
 
+Create `locale.conf` and set `LANG` variable:
+
+```bash
+echo "LANG=en_US.URF-8" > /etc/locale.conf
+```
+
+
 ### User Accounts
 
 Set password for root user:
@@ -474,7 +481,7 @@ chage -d 0 root
 exit
 
 # Umount /mnt
-umount /mnt
+umount -R /mnt
 
 # Reboot
 reboot
@@ -522,6 +529,12 @@ Time zone and synchronization:
 timedatectl set-timezone Europe/Bratislava
 timedatectl set-ntp true
 systemctl enable systemd-timesyncd
+```
+
+Generate `/etc/adjtime`:
+
+```bash
+hwclock --systohc
 ```
 
 Hostname and hosts file"
@@ -573,6 +586,9 @@ Nvidia:
 ```bash
 pacman -S --noconfirm nvidia nvidia-utils
 ```
+
+> **Note**: You may want to install `optimus-manager` AUR package in case you want to switch between Intel and Nvidia GPU
+
 
 HyperV:
 
