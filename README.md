@@ -33,8 +33,9 @@
     - [Xfce](#xfce)
     - [Mate](#mate)
   - [Window Manager](#window-manager)
-    - [Awesome WM](#awesome-wm)
+    - [Awesome WM with lightdm](#awesome-wm-with-lightdm)
       - [Configuration](#configuration)
+    - [Awesome WM without login manager](#awesome-wm-without-login-manager)
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
     - [Applications to consider](#applications-to-consider)
@@ -156,7 +157,13 @@ pacman -Sy
 
 ### Disk settings  - EFI and LVM
 
-Start by list existing block devices:
+Verify if target device supports EUFI:
+
+```bash
+ls /sys/firmware/efi/efivars && echo 'EUFI Install' || echo 'BIOS Install'
+```
+
+List existing block devices:
 
 ```bash
 # Using lsblk filter by type
@@ -357,7 +364,7 @@ arch-chroot /mnt pacman -S --noconfirm vim git base-devel openssh networkmanager
 arch-chroot /mnt systemctl enable {sshd,NetworkManager}
 ```
 
-> **Warning**: In some weird situations the initramfs rebuilding fails after installing lvm2 package. If using `--noconfirm` the process get killed but pacman locks the database. You can unlock it with `rm -rf /var/lib/pacman/db.lck` and then reinstalling the `lvm2` package.
+> **Warning**: In some weird situations the initramfs rebuilding fails after installing lvm2 package. If using `--noconfirm` the process get killed but pacman locks the database. You can unlock it with `rm -rf /mnt/var/lib/pacman/db.lck` and then reinstalling the `lvm2` package.
 
 Recommended packags for wireless networking:
 
@@ -398,7 +405,7 @@ arch-chroot /mnt locale-gen
 Create `locale.conf` and set `LANG` variable:
 
 ```bash
-arch-chroot /mnt echo "LANG=en_US.URF-8" > /etc/locale.conf
+arch-chroot /mnt sh -c 'echo "LANG=en_US.UTF-8" > /etc/locale.conf'
 ```
 
 
@@ -407,8 +414,8 @@ arch-chroot /mnt echo "LANG=en_US.URF-8" > /etc/locale.conf
 Set password for root user:
 
 ```bash
-# Set root password - this does not work
-arch-chroot /mnt echo "root:changeme"|arch-chroot /mnt chpasswd
+# Set root password
+arch-chroot /mnt sh -c 'echo "root:changeme"|chpasswd'
 ```
 
 
@@ -418,7 +425,7 @@ Create normal user:
 arch-chroot /mnt useradd -m -g users maros
 
 # Set Initial password - this does not work
-arch-chroot /mnt echo "maros:changeme"|arch-chroot /mnt chpasswd
+arch-chroot /mnt sh -c 'echo "maros:changeme"|chpasswd'
 
 # Force user to change after initial login
 arch-chroot /mnt chage -d 0 maros
@@ -430,7 +437,7 @@ Allow user to use sudo with password:
 
 ```bash
 # This does not work
-arch-chroot /mnt echo "maros ALL=(ALL) ALL" > arch-chroot /mnt tee /etc/sudoers.d/maros
+arch-chroot /mnt sh -c 'echo "maros ALL=(ALL) ALL" | tee /etc/sudoers.d/maros'
 ```
 
 
@@ -532,7 +539,7 @@ Generate `/etc/adjtime`:
 hwclock --systohc
 ```
 
-Hostname and hosts file"
+Hostname and hosts file:
 
 ```bash
 hostnamectl set-hostname dojo.localdomain
@@ -708,7 +715,7 @@ reboot
 
 Window Manager offers low footprint environment with high level of customizaion.
 
-### Awesome WM
+### Awesome WM with lightdm
 
 | Package Count | Packages Size | Memory Footprint (All) |
 | ------------- | ------------- | ---------------------- |
@@ -757,7 +764,7 @@ cp /etc/xdg/awesome/rc.lua ~/.config/awesome/rc.lua
 Change default terminal:
 
 ```bash
-cp ~/.config/awesome/rc.lua
+cp ~/.config/awesome/rc.lua ~/.config/awesome/rc.lua.bak
 
 # Update configuration
 sed -i 's/^terminal =.*/terminal = "alacritty"/' ~/.config/awesome/rc.lua
@@ -769,6 +776,21 @@ echo -e 'awful.spawn.with_shell("nitrogen --restore")' >> ~/.config/awesome/rc.l
 
 # Validate configuration
 awesome -k
+```
+
+
+### Awesome WM without login manager
+
+This assumes that you have `xorg-server` already installed. The following steps require root privileges.
+
+```bash
+pacman -S --noconfirm awesome xterm xorg-xinit
+```
+
+Start awesome without display manager:
+
+```bash
+echo “exec awesome” > ~/.xinitrc
 ```
 
 
