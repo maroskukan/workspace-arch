@@ -733,11 +733,13 @@ pacman -S --noconfirm pcmanfm alacritty compton nitrogen archlinux-wallpaper dme
 systemctl enable lightdm
 ```
 
-Reboot to take effect:
+Start the lighdm.
 
 ```bash
-reboot
+systemctl start lightdm
 ```
+
+The login manager should now run at `tty7. If not already you can switch to it using `Ctrl + Alt + F7`.
 
 Here are some shortcuts:
 
@@ -754,6 +756,8 @@ Here are some shortcuts:
 
 
 #### Configuration
+
+Run the following commands as normal user.
 
 ```bash
 mkdir -p ~/.config/awesome
