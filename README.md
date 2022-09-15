@@ -10,7 +10,8 @@
       - [Wireless](#wireless)
     - [Basic settings](#basic-settings)
     - [Disk settings  - EFI and LVM](#disk-settings----efi-and-lvm)
-      - [Creating Partitions](#creating-partitions)
+      - [Creating Partitions - fdisk](#creating-partitions---fdisk)
+      - [Creating Partitions - parted](#creating-partitions---parted)
       - [Configuring LVM](#configuring-lvm)
       - [Creating filesystems](#creating-filesystems)
     - [Installing Base](#installing-base)
@@ -174,7 +175,7 @@ fdisk -l
 ```
 
 
-#### Creating Partitions
+#### Creating Partitions - fdisk
 
 Next, partition the disk as follows:
 
@@ -240,6 +241,32 @@ The partition table has been altered.
 Calling ioctl() to re-read partition table.
 Syncing disks.
 ```
+
+
+#### Creating Partitions - parted
+
+Next, partition the disk as follows:
+
+| Mount Point | Partition   | Partition type | Size                    |
+| ----------- | ----------- | -------------- | ----------------------- |
+| `/mnt/boot` | `/dev/sda1` | EFI System     | 500M                    |
+| `/mnt`      | `/dev/sda2` | LVM            | Remainder of the device |
+
+
+```bash
+# Create new empty GPT partition table
+parted -s /dev/sda mklabel gpt
+
+# Create new primary partition
+parted -a optimal /dev/sda --script mkpart primary fat32 1MiB 501MiB
+parted -a optimal /dev/sda --script mkpart primary ext4 501MiB 100%
+
+# Update partition type
+parted -a optimal /dev/sda --script set 1 esp on
+parted -a optimal /dev/sda --script set 2 lvm on
+```
+
+> **Warning**: If you made a mistake and want to wipe the entire disk you can use `dd if=/dev/zero of=/dev/sda bs=1M`. Make sure the device name is correct.
 
 
 #### Configuring LVM
