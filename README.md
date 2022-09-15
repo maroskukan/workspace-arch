@@ -463,7 +463,7 @@ arch-chroot /mnt chage -d 0 maros
 Allow user to use sudo with password:
 
 ```bash
-# This does not work
+# This does work
 arch-chroot /mnt sh -c 'echo "maros ALL=(ALL) ALL" | tee /etc/sudoers.d/maros'
 ```
 
