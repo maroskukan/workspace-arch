@@ -1,0 +1,1 @@
+paru -S archlinux-tweak-tool-git
