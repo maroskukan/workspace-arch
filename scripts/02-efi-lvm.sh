@@ -14,22 +14,23 @@ ls /sys/firmware/efi/efivars &>/dev/null \
 
 
 # Clean up physical volume
-read -p "Wipe filesystem at /dev/sda? [y = Yes, n = No]" -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    echo "Wiping filesystem at /dev/sda..."
-    wipefs --all --force /dev/sda &>>/tmp/install.log \
-    && echo -e "\e[32m[OK]\e[0m  Filesystem wiped." \
-    || echo -e "\e[31m[NOK]\e[0m Failed wipe filelsystem."
-elif [[ $REPLY =~ ^[Nn]$ ]]
-then
-    echo "Wiping filesystem aborted."
-    exit 0
-else
-    echo "Wiping filesystem aborted."
-    exit 0
-fi
+while true; do
+    read -p "Wipe filesystem at /dev/sda? (y/n)" yn
+    case $yn in 
+      [yY])
+        echo "Wiping filesystem at /dev/sda..."
+        wipefs --all --force /dev/sda &>>/tmp/install.log \
+        && echo -e "\e[32m[OK]\e[0m  Filesystem wiped." \
+        || echo -e "\e[31m[NOK]\e[0m Failed wipe filelsystem."
+        break;;
+      [nN])
+        echo "Wiping filesystem aborted."
+        exit 0;;
+      *)
+        echo "Invalid response."
+        ;;
+    esac
+done
 
 
 # Create new empty GPT partition table
