@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+set -e
 
 # Description: Arch Linux Initial Installation Script
 # Author: Maros Kukan
@@ -6,8 +7,9 @@
 
 
 # Create install log file
+echo "Creating installation log file at /tmp/install.log..."
 touch /tmp/install.log &>/dev/null \
-  && echo -e "\e[32m[OK]\e[0m  Installation log file create at /tmp/install.log." \
+  && echo -e "\e[32m[OK]\e[0m  Installation log file created." \
   || echo -e "\e[31m[NOK]\e[0m Failed to create installation log."
 
 # Enable NTP time synchronization
