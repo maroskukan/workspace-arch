@@ -1,7 +1,9 @@
 #!/usr/bin/bash
 
 # Verify if EUFI is supported
-ls /sys/firmware/efi/efivars && echo 'EUFI Install' || echo 'BIOS Install'
+ls /sys/firmware/efi/efivars &>/dev/null \
+   && echo 'EUFI Install' \
+   || echo 'BIOS Install'
 
 # Create new empty GPT partition table
 parted -s /dev/sda mklabel gpt
