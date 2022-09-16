@@ -5,11 +5,16 @@
 # Usage: curl -s https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/01-init.sh | bash
 
 
+# Create install log file
+touch /tmp/install.log &>/dev/null \
+  && echo -e "\e[32m[OK]\e[0m  Installation log file create at /tmp/install.log." \
+  || echo -e "\e[31m[NOK]\e[0m Failed to create installation log."
+
 # Enable NTP time synchronization
 echo "Enabling NTP time synchronization..."
 timedatectl set-ntp true &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  NTP timesync was enabled." \
-  || echo -e "\e[31m[NOK]\e[0m Failed enable NTP timesync."
+  || echo -e "\e[31m[NOK]\e[0m Failed to enable NTP timesync."
 
 
 # Update mirrors list
