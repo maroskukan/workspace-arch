@@ -6,7 +6,7 @@ set -e
 # Usage: curl -s https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/06-lvm-hooks.sh | bash
 
 
-echo "Backing up /etc/mkinitcpio.conf..."
+echo "Backing up /etc/mkinitcpio.conf on target..."
 arch-chroot /mnt cp /etc/mkinitcpio.conf /etc/mkinitcpio.conf.bak &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Backup created." \
   || echo -e "\e[31m[NOK]\e[0m Failed to create backup."
