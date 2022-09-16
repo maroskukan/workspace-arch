@@ -18,10 +18,10 @@ timedatectl set-ntp true &>>/tmp/install.log \
 
 
 # Update mirrors list
-echo "Updating pacman mirror list for live environment..."
-reflector > /etc/pacman.d/mirrorlist &>>/tmp/install.log \
-  && echo -e "\e[32m[OK]\e[0m  Mirrors list updated." \
-  || echo -e "\e[31m[NOK]\e[0m Failed to update mirror list."
+# echo "Updating pacman mirror list for live environment..."
+# reflector > /etc/pacman.d/mirrorlist &>>/tmp/install.log \
+#   && echo -e "\e[32m[OK]\e[0m  Mirrors list updated." \
+#   || echo -e "\e[31m[NOK]\e[0m Failed to update mirror list."
 
 
 # Enable parallel downloads
