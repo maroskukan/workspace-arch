@@ -8,7 +8,7 @@ reflector > /etc/pacman.d/mirrorlist &>/dev/null \
 
 # Kernel and headers
 echo "Packstrapping base and kernel..."
-pacstrap /mnt base linux linux-headers &>/dev/null
+pacstrap /mnt base linux linux-headers &>/dev/null \
   && echo "[OK]  Packstrap was completed." \
   || echo "[NOK] Failed to pacstrap the base."
 
