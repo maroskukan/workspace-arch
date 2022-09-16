@@ -1,9 +1,9 @@
-#!/usr/bin/bas
+#!/usr/bin/bash
 set -e
 
 # Description: Arch Linux Initial Installation Script
 # Author: Maros Kukan
-# Usage: curl -s https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/06-localization.sh | bash
+# Usage: curl -s https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/07-localization.sh | bash
 
 
 echo "Backing up /etc/locale.gen on target..."
