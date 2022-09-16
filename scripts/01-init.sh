@@ -2,18 +2,20 @@
 
 # Description: Arch Linux Initial Installation Script
 # Author: Maros Kukan
+# Usage: curl -s -H 'Cache-Control: no-cache, no-store' \
+#          https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/01-init.sh | bash
 
 
 # Enable NTP time synchronization
 echo "Enabling NTP time synchronization..."
-timedatectl set-ntp true &>/dev/null \
+timedatectl set-ntp true &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  NTP timesync was enabled." \
   || echo -e "\e[31m[NOK]\e[0m Failed enable NTP timesync."
 
 
 # Update mirrors list
 echo "Updating pacman mirror list for live environment..."
-reflector > /etc/pacman.d/mirrorlist &>/dev/null \
+reflector > /etc/pacman.d/mirrorlist &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Mirrors list updated." \
   || echo -e "\e[31m[NOK]\e[0m Failed to update mirror list."
 
@@ -27,13 +29,13 @@ sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf \
 
 # Synchronize package databases
 echo "Synchronizing pacman database for live environment..."
-pacman -Sy &>/dev/null \
+pacman -Sy &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Pacman database updated." \
   || echo -e "\e[31m[NOK]\e[0m Failed to update pacman database."
 
 
 # Install packages in live environment
 echo "Installing virt-what package for live environment..."
-pacman -S --noconfirm virt-what &>/dev/null \
+pacman -S --noconfirm virt-what &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Virt-what package installed." \
   || echo -e "\e[31m[NOK]\e[0m Failed to install virt-what package."
