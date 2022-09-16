@@ -34,5 +34,5 @@ umount -R /mnt &>/dev/null \
 
 
 # Reboot
-echo "\e[33m[INFO]\e[0m The base installation is completed. Type 'reboot' to boot to target."
-echo "\e[33m[INFO]\e[0m Login on TTY or SSH with user 'maros' with password of 'changeme'"
+echo -e "\e[33m[INFO]\e[0m The base installation is completed. Type 'reboot' to boot to target."
+echo -e "\e[33m[INFO]\e[0m Login on TTY or SSH with user 'maros' with password of 'changeme'"
