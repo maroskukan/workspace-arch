@@ -6,6 +6,9 @@
 # Enable NTP time synchronization
 timedatectl set-ntp true
 
+# Update mirrors list
+reflector > /etc/pacman.d/mirrorlist
+
 # Enable parallel downloads
 sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf
 
