@@ -7,7 +7,7 @@ set -e
 
 
 # Retrieve Host Hypervisor
-declare -xr HYPERVISOR=$(virt-what)
+declare -xr HYPERVISOR=$(virt-what | head -n1)
 
 # Install Hypervisor specific packages
 case $HYPERVISOR in
@@ -28,6 +28,6 @@ case $HYPERVISOR in
             || echo -e "\e[31m[NOK]\e[0m Failed to install packages."
         ;;
     *)
-        echo "\e[33m[INFO]\e[0m No hypervisor detected skipping, specific packages..."
+        echo -e "\e[33m[INFO]\e[0m No hypervisor detected skipping, specific packages..."
         ;;
 esac
