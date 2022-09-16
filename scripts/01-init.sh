@@ -2,8 +2,7 @@
 
 # Description: Arch Linux Initial Installation Script
 # Author: Maros Kukan
-# Usage: curl -s -H 'Cache-Control: no-cache, no-store' \
-#          https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/01-init.sh | bash
+# Usage: curl -s https://raw.githubusercontent.com/maroskukan/workspace-arch/main/scripts/01-init.sh | bash
 
 
 # Enable NTP time synchronization
@@ -22,7 +21,7 @@ reflector > /etc/pacman.d/mirrorlist &>>/tmp/install.log \
 
 # Enable parallel downloads
 echo "Setting parallel downloads to 5..."
-sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf \
+sed -i 's/^#ParallelDownloads =.*/ParallelDownloads = 5/' /etc/pacman.conf &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Parallel downloads count set to 5." \
   || echo -e "\e[31m[NOK]\e[0m Failed to update parallel downloads count."
 
