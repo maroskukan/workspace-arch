@@ -12,8 +12,8 @@ arch-chroot /mnt useradd -m -g users maros &>>/tmp/install.log \
   || echo -e "\e[31m[NOK]\e[0m Failed to create user account."
 
 
-# Set Initial password - this does not work
-echo "Setting the initial password to 'changeme'"
+# Set Initial password
+echo "Setting the user initial password to 'changeme'"
 arch-chroot /mnt sh -c 'echo "maros:changeme"|chpasswd' &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  User password set." \
   || echo -e "\e[31m[NOK]\e[0m Failed to set user password."
