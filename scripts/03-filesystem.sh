@@ -43,6 +43,6 @@ mkdir /mnt/etc &>>/tmp/install.log \
     || echo -e "\e[31m[NOK]\e[0m Failed to create folder."
 
 echo "Generating filelsystem table on target..."
-genfstab -U -p /mnt >> /mnt/etc/fstab &>>/tmp/install.log \
+genfstab -U -p /mnt | tee /mnt/etc/fstab &>>/tmp/install.log \
     && echo -e "\e[32m[OK]\e[0m  Filesystem table created." \
     || echo -e "\e[31m[NOK]\e[0m Failed to create filesystem table."

@@ -19,7 +19,7 @@ pacstrap /mnt base linux linux-headers &>>/tmp/install.log \
 
 # Update target mirror list
 echo "Updating target mirror list..."
-reflector > /mnt/etc/pacman.d/mirrorlist \
+reflector | tee /mnt/etc/pacman.d/mirrorlist &>>/tmp/install.log \
   && echo -e "\e[32m[OK]\e[0m  Mirrors list updated." \
   || echo -e "\e[31m[NOK]\e[0m Failed to update mirror list."
 
