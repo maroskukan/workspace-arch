@@ -40,6 +40,7 @@
   - [Tips](#tips)
     - [Arch User Repositories](#arch-user-repositories)
     - [Applications to consider](#applications-to-consider)
+    - [Screen Selection](#screen-selection)
 
 
 
@@ -867,8 +868,18 @@ paru -Sua
 paru -Qua
 ```
 
+
 ### Applications to consider
 
 ```bash
 pacman -S bat
+```
+
+
+### Screen Selection
+
+When using external monitor connected via Thunderbolt, it is possible to disable the built-in screen. The following is an example of disabling screen on Macbook Air.
+
+```bash
+xrandr --output eDP-1 --off --output DP-1 --auto
 ```
